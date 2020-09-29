@@ -47,5 +47,10 @@ function getPasswordAfterThat($msisdn) {
     if ($c['code']=='0') return $c['password'];
     else {echo "Ошибка №{$c['code']} при login"; die();}
 }
-
+function getBalance($msisdn, $password) {
+    $resp = file_get_contents("https://emotion.megalabs.ru/sm/client/balance?login={$msisdn}@multifon.ru&password={$password}");
+    $xml = new SimpleXMLElement($resp);
+    $x2a = xml2array($xml);
+    return $x2a['balance'];
+}
 ?>
