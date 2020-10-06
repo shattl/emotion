@@ -45,7 +45,7 @@ function getPasswordAfterThat($msisdn) {
     $resp = curl("login",json_encode(["msisdn"=>$msisdn]));
     $c = json_decode($resp,true);
     if ($c['code']=='0') return $c['password'];
-    elseif ($c['code']=="100008") {echo "Услуги eMotion еще подключаются на Вашем номере, ожидайте поступления SMS о подключении и попробуйте еще раз..."; die();}
+    elseif ($c['code']=="100008") {if ($c['timer'] == "5") {die("Услуги заблокированы из-за отрицательного баланса. Пополните счет и повторите попытку подключения.");} else {echo "Услуги eMotion еще подключаются на Вашем номере, ожидайте поступления SMS о подключении и попробуйте еще раз..."; die();}}
     else {echo "Ошибка №{$c['code']} при login"; die();}
 }
 function getBalance($msisdn, $password) {
